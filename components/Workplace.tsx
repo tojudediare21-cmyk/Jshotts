@@ -26,7 +26,7 @@ export const Workplace: React.FC = () => {
 
   // Team State
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>(TEAM_MEMBERS);
-  const [newMember, setNewMember] = useState({ name: '', role: '', description: '' });
+  const [newMember, setNewMember] = useState({ name: '', role: '', description: '', phoneNumber: '' });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -90,11 +90,12 @@ export const Workplace: React.FC = () => {
       role: newMember.role,
       description: newMember.description || 'New team member',
       image: `https://picsum.photos/400/500?random=${Date.now()}`,
+      phoneNumber: newMember.phoneNumber || '+234 000 000 0000',
       contactContext: `I would like to contact ${newMember.name}, the ${newMember.role}`
     };
 
     setTeamMembers(prev => [...prev, member]);
-    setNewMember({ name: '', role: '', description: '' });
+    setNewMember({ name: '', role: '', description: '', phoneNumber: '' });
   };
 
   const handleShareReview = async (review: Review) => {
@@ -389,6 +390,13 @@ export const Workplace: React.FC = () => {
                     value={newMember.role}
                     onChange={e => setNewMember({...newMember, role: e.target.value})}
                     className="bg-zinc-950 border border-zinc-800 text-white p-3 rounded-xl focus:border-amber-500 outline-none"
+                  />
+                  <input 
+                    type="text" 
+                    placeholder="Phone Number" 
+                    value={newMember.phoneNumber}
+                    onChange={e => setNewMember({...newMember, phoneNumber: e.target.value})}
+                    className="bg-zinc-950 border border-zinc-800 text-white p-3 rounded-xl focus:border-amber-500 outline-none md:col-span-2"
                   />
                 </div>
                 <textarea 

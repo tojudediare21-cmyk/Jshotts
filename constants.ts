@@ -29,14 +29,16 @@ export const TEAM_MEMBERS: TeamMember[] = [
     name: 'Toju Dediare',
     description: 'Visionary leader overseeing all major creative direction and premium client relations.',
     image: 'https://picsum.photos/400/500?grayscale',
+    phoneNumber: '+234 801 000 0001',
     contactContext: "I would like to speak with the Director, Toju Dediare, regarding a high-profile project."
   },
   {
     id: 'photographer',
-    role: 'Photographer',
+    role: 'Mobile Handler',
     name: 'Smyleon',
     description: 'Expert in high-end photography, portraits, and capturing the perfect moment.',
     image: 'https://picsum.photos/401/500?grayscale',
+    phoneNumber: '+234 802 000 0002',
     contactContext: "I have a query for Smyleon, the photographer."
   },
   {
@@ -45,6 +47,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     name: 'Taiwo',
     description: 'Managing schedules, bookings, and general inquiries to ensure smooth operations.',
     image: 'https://picsum.photos/402/500?grayscale',
+    phoneNumber: '+234 803 000 0003',
     contactContext: "I need assistance from the Secretary, Taiwo, regarding my appointment."
   }
 ];

@@ -6,18 +6,25 @@ import { Workplace } from './components/Workplace';
 import { Team } from './components/Team';
 import { Gallery } from './components/Gallery';
 import { Privacy } from './components/Privacy';
-import { ViewState } from './types';
-import { getChatResponse } from './services/gemini';
+import { AdminDashboard } from './components/AdminDashboard';
+import { ViewState, TeamMember, CompanyInfo, InternalMessage } from './types';
+import { TEAM_MEMBERS } from './constants';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>(ViewState.HOME);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
 
+  // Global State for App Data
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(TEAM_MEMBERS);
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo>({
+    phone: '+234 800 JSHOTS',
+    email: 'hello@jshots.com'
+  });
+  const [internalMessages, setInternalMessages] = useState<InternalMessage[]>([]);
+
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: any) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       setInstallPrompt(e);
     };
 
@@ -30,23 +37,33 @@ const App: React.FC = () => {
 
   const handleInstallClick = () => {
     if (!installPrompt) return;
-    
-    // Show the install prompt
     installPrompt.prompt();
-    
-    // Wait for the user to respond to the prompt
     installPrompt.userChoice.then((choiceResult: any) => {
       if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
         setInstallPrompt(null);
-      } else {
-        console.log('User dismissed the install prompt');
       }
     });
   };
 
   const handleTalkToTeam = (context: string) => {
     setCurrentView(ViewState.WORKPLACE);
+  };
+
+  // Admin Actions
+  const handleUpdateMember = (id: string, updates: Partial<TeamMember>) => {
+    setTeamMembers(prev => prev.map(member => 
+      member.id === id ? { ...member, ...updates } : member
+    ));
+  };
+
+  const handleSendInternalMessage = (text: string, sender: string) => {
+    const newMessage: InternalMessage = {
+      id: Date.now().toString(),
+      sender,
+      text,
+      timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+    };
+    setInternalMessages(prev => [...prev, newMessage]);
   };
 
   const renderView = () => {
@@ -64,11 +81,22 @@ const App: React.FC = () => {
       case ViewState.WORKPLACE:
         return <Workplace />;
       case ViewState.TEAM:
-        return <Team onTalkTo={handleTalkToTeam} />;
+        return <Team onTalkTo={handleTalkToTeam} teamMembers={teamMembers} />;
       case ViewState.GALLERY:
         return <Gallery />;
       case ViewState.PRIVACY:
         return <Privacy />;
+      case ViewState.ADMIN:
+        return (
+          <AdminDashboard 
+            teamMembers={teamMembers}
+            onUpdateMember={handleUpdateMember}
+            companyInfo={companyInfo}
+            onUpdateCompanyInfo={setCompanyInfo}
+            internalMessages={internalMessages}
+            onSendInternalMessage={handleSendInternalMessage}
+          />
+        );
       default:
         return (
           <Hero 
@@ -87,6 +115,7 @@ const App: React.FC = () => {
         onNavigate={setCurrentView} 
         installPrompt={installPrompt}
         onInstall={handleInstallClick}
+        companyLogo={companyInfo.logoUrl}
       />
       <main className="fade-in flex-grow">
         {renderView()}
@@ -99,7 +128,9 @@ const App: React.FC = () => {
             <button onClick={() => setCurrentView(ViewState.HOME)} className="hover:text-amber-500 transition-colors">Home</button>
             <button onClick={() => setCurrentView(ViewState.BOOKING)} className="hover:text-amber-500 transition-colors">Book</button>
             <button onClick={() => setCurrentView(ViewState.PRIVACY)} className="hover:text-amber-500 transition-colors">Privacy & Regulations</button>
+            <button onClick={() => setCurrentView(ViewState.ADMIN)} className="hover:text-white text-zinc-700 transition-colors">Staff Login</button>
           </div>
+          <p className="mb-2">Contact: {companyInfo.phone} • {companyInfo.email}</p>
           <p>&copy; {new Date().getFullYear()} J Shots Media. Lagos, Nigeria.</p>
         </footer>
       )}

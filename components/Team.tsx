@@ -1,12 +1,12 @@
 import React from 'react';
-import { TEAM_MEMBERS } from '../constants';
-import { ViewState } from '../types';
+import { TeamMember } from '../types';
 
 interface TeamProps {
     onTalkTo: (context: string) => void;
+    teamMembers: TeamMember[];
 }
 
-export const Team: React.FC<TeamProps> = ({ onTalkTo }) => {
+export const Team: React.FC<TeamProps> = ({ onTalkTo, teamMembers }) => {
   return (
     <div className="min-h-screen pt-28 pb-12 px-4 bg-zinc-950">
       <div className="max-w-7xl mx-auto">
@@ -18,7 +18,7 @@ export const Team: React.FC<TeamProps> = ({ onTalkTo }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {TEAM_MEMBERS.map((member) => (
+          {teamMembers.map((member) => (
             <div key={member.id} className="group relative bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-300 shadow-xl">
               <div className="aspect-[4/5] w-full overflow-hidden relative">
                 <img 
@@ -32,6 +32,10 @@ export const Team: React.FC<TeamProps> = ({ onTalkTo }) => {
                     {member.role}
                   </span>
                   <h3 className="text-2xl font-bold text-white">{member.name}</h3>
+                  <p className="text-zinc-400 text-sm mt-1 flex items-center gap-1">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    {member.phoneNumber}
+                  </p>
                 </div>
               </div>
               

@@ -24,13 +24,21 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
+export interface InternalMessage {
+  id: string;
+  sender: string; // 'Director', 'Secretary', 'Mobile Handler'
+  text: string;
+  timestamp: string;
+}
+
 export enum ViewState {
   HOME = 'HOME',
   BOOKING = 'BOOKING',
   WORKPLACE = 'WORKPLACE',
   TEAM = 'TEAM',
   GALLERY = 'GALLERY',
-  PRIVACY = 'PRIVACY'
+  PRIVACY = 'PRIVACY',
+  ADMIN = 'ADMIN'
 }
 
 export interface TeamMember {
@@ -39,6 +47,7 @@ export interface TeamMember {
   name: string;
   description: string;
   image: string;
+  phoneNumber: string;
   contactContext: string;
 }
 
@@ -47,4 +56,10 @@ export interface GalleryItem {
   src: string;
   category: string;
   caption: string;
+}
+
+export interface CompanyInfo {
+  phone: string;
+  email: string;
+  logoUrl?: string; // Optional custom logo image
 }

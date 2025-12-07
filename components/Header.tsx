@@ -7,9 +7,10 @@ interface HeaderProps {
   onNavigate: (view: ViewState) => void;
   installPrompt: any;
   onInstall: () => void;
+  companyLogo?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate, installPrompt, onInstall }) => {
+export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate, installPrompt, onInstall, companyLogo }) => {
   const navItems = [
     { label: 'Home', view: ViewState.HOME },
     { label: 'Book', view: ViewState.BOOKING },
@@ -54,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate, install
             <div className="relative">
                <div className="absolute inset-0 bg-amber-500 blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
                <div className="relative bg-zinc-900 border border-zinc-800 p-2 rounded-xl text-white group-hover:border-amber-500/50 transition-colors duration-300">
-                 <Logo className="w-6 h-6 md:w-8 md:h-8 text-white group-hover:text-amber-500 transition-colors" />
+                 <Logo className="w-6 h-6 md:w-8 md:h-8 text-white group-hover:text-amber-500 transition-colors" customSrc={companyLogo} />
                </div>
             </div>
             <div className="flex flex-col">
